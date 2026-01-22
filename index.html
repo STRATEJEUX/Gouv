@@ -1,0 +1,610 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Jeu – Parties prenantes & Indicateurs</title>
+  <style>
+    :root{
+      --bg:#0b0f19;
+      --panel:#121a2b;
+      --text:#e9eefc;
+      --muted:#a8b3d6;
+      --ok:#22c55e;
+      --warn:#f59e0b;
+      --bad:#ef4444;
+      --line:#24304a;
+      --btn:#1e2a44;
+      --btn2:#233258;
+      --shadow: 0 10px 30px rgba(0,0,0,.35);
+      --radius: 16px;
+      font-synthesis-weight: none;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+      background: radial-gradient(1200px 600px at 20% 0%, #15234a 0%, var(--bg) 55%) fixed;
+      color:var(--text);
+      line-height:1.35;
+    }
+    header{
+      position: sticky;
+      top:0;
+      z-index: 5;
+      background: rgba(11,15,25,.72);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(36,48,74,.55);
+    }
+    .wrap{max-width:1050px;margin:0 auto;padding:18px 18px 28px}
+    .top{
+      display:flex; gap:14px; flex-wrap:wrap; align-items:center; justify-content:space-between;
+    }
+    .title{
+      display:flex; flex-direction:column; gap:4px;
+    }
+    .title h1{margin:0;font-size:18px;font-weight:750;letter-spacing:.2px}
+    .title p{margin:0;color:var(--muted);font-size:13px}
+    .pill{
+      display:flex; gap:10px; flex-wrap:wrap;
+      align-items:center;
+    }
+    .pill > div{
+      background: rgba(18,26,43,.75);
+      border: 1px solid rgba(36,48,74,.7);
+      padding:10px 12px;
+      border-radius: 999px;
+      box-shadow: var(--shadow);
+      font-size:13px;
+      color:var(--muted);
+    }
+    main .card{
+      background: rgba(18,26,43,.78);
+      border: 1px solid rgba(36,48,74,.75);
+      border-radius: var(--radius);
+      padding:18px;
+      box-shadow: var(--shadow);
+      margin-top:16px;
+    }
+    .dashboard{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap:12px;
+      margin-top:14px;
+    }
+    .meter{
+      border: 1px solid rgba(36,48,74,.8);
+      border-radius: 14px;
+      padding:12px;
+      background: rgba(10,14,25,.25);
+    }
+    .meter-head{
+      display:flex; justify-content:space-between; align-items:baseline; gap:12px;
+      margin-bottom:8px;
+    }
+    .meter-head .name{font-weight:700}
+    .meter-head .val{color:var(--muted); font-size:13px}
+    .segments{
+      display:grid;
+      grid-template-columns: repeat(10, 1fr);
+      gap:6px;
+    }
+    .seg{
+      height:14px;
+      border-radius: 6px;
+      background: rgba(168,179,214,.15);
+      border: 1px solid rgba(168,179,214,.15);
+    }
+    .seg.filled.ok{background: rgba(34,197,94,.9); border-color: rgba(34,197,94,.4)}
+    .seg.filled.warn{background: rgba(245,158,11,.92); border-color: rgba(245,158,11,.4)}
+    .seg.filled.bad{background: rgba(239,68,68,.92); border-color: rgba(239,68,68,.45)}
+    .alert{
+      margin-top:10px;
+      padding:10px 12px;
+      border-radius: 12px;
+      border: 1px solid rgba(36,48,74,.8);
+      background: rgba(10,14,25,.18);
+      color: var(--muted);
+      display:none;
+    }
+    .alert.show{display:block}
+    .alert.bad{border-color: rgba(239,68,68,.55); background: rgba(239,68,68,.10); color:#ffd9d9}
+    .alert.warn{border-color: rgba(245,158,11,.55); background: rgba(245,158,11,.10); color:#ffe8c5}
+    .grid2{
+      display:grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap:14px;
+    }
+    @media (max-width: 860px){ .grid2{grid-template-columns: 1fr} }
+    .decision h2{margin:0 0 8px 0;font-size:18px}
+    .decision p{margin:0 0 12px 0;color:var(--muted)}
+    .choices{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:12px;
+    }
+    @media (max-width: 560px){ .choices{grid-template-columns:1fr} }
+    .choice{
+      background: rgba(10,14,25,.25);
+      border: 1px solid rgba(36,48,74,.8);
+      border-radius: 14px;
+      padding:12px;
+    }
+    .choice h3{margin:0 0 6px 0;font-size:15px}
+    .choice .impact{
+      margin-top:10px;
+      color: var(--muted);
+      font-size: 13px;
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+    .impact span{
+      padding:4px 8px;
+      border-radius: 999px;
+      border:1px solid rgba(36,48,74,.8);
+      background: rgba(18,26,43,.55);
+    }
+    .voteBox{
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+    }
+    .voteBox h3{margin:0;font-size:15px}
+    .row{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:end;
+    }
+    label{
+      display:flex; flex-direction:column; gap:6px;
+      font-size:12px; color:var(--muted);
+      min-width: 140px;
+    }
+    input[type="number"]{
+      width:160px;
+      padding:10px 12px;
+      border-radius: 12px;
+      border:1px solid rgba(36,48,74,.9);
+      background: rgba(10,14,25,.35);
+      color: var(--text);
+      outline: none;
+    }
+    input[type="number"]:focus{border-color: rgba(168,179,214,.65)}
+    .btns{display:flex; gap:10px; flex-wrap:wrap}
+    button{
+      cursor:pointer;
+      border:1px solid rgba(36,48,74,.9);
+      background: linear-gradient(180deg, rgba(30,42,68,.95), rgba(18,26,43,.95));
+      color: var(--text);
+      padding:10px 12px;
+      border-radius: 12px;
+      font-weight:650;
+      letter-spacing:.2px;
+    }
+    button:hover{background: linear-gradient(180deg, rgba(35,50,88,.95), rgba(18,26,43,.95))}
+    button.secondary{
+      background: rgba(10,14,25,.15);
+      color: var(--muted);
+      font-weight:650;
+    }
+    button.secondary:hover{background: rgba(10,14,25,.25)}
+    .log{
+      margin-top:12px;
+      border-top:1px dashed rgba(36,48,74,.85);
+      padding-top:12px;
+      color: var(--muted);
+      font-size: 13px;
+      max-height: 260px;
+      overflow:auto;
+    }
+    .log b{color:var(--text)}
+    .end{
+      display:none;
+      margin-top:14px;
+      padding:12px;
+      border-radius: 14px;
+      border:1px solid rgba(36,48,74,.8);
+      background: rgba(10,14,25,.18);
+    }
+    .end.show{display:block}
+    .end.fail{border-color: rgba(239,68,68,.55); background: rgba(239,68,68,.10)}
+    .end.win{border-color: rgba(34,197,94,.45); background: rgba(34,197,94,.10)}
+    .kbd{
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 12px;
+      color: var(--muted);
+    }
+  </style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <div class="top">
+      <div class="title">
+        <h1>Jeu – Parties prenantes & arbitrages</h1>
+        <p>Votez (A ou B), puis observez l’impact sur les indicateurs. Si 💰 atteint 0 : faillite (tout le monde perd).</p>
+      </div>
+      <div class="pill">
+        <div>Échelle : <b>0 → 10</b></div>
+        <div>Rouge : <b>0–3</b> • Orange : <b>4–6</b> • Vert : <b>7–10</b></div>
+        <div class="kbd">Astuce : entrez les voix puis “Appliquer le vote”</div>
+      </div>
+    </div>
+
+    <div class="dashboard" id="dashboard"></div>
+
+    <div class="alert" id="globalAlert"></div>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+    <div class="card grid2">
+      <div class="decision">
+        <h2 id="dTitle">Décision</h2>
+        <p id="dDesc"></p>
+
+        <div class="choices">
+          <div class="choice">
+            <h3 id="aTitle">Choix A</h3>
+            <div class="impact" id="aImpact"></div>
+          </div>
+          <div class="choice">
+            <h3 id="bTitle">Choix B</h3>
+            <div class="impact" id="bImpact"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="voteBox">
+        <h3>Vote des participants</h3>
+        <div class="row">
+          <label>Nombre de voix pour A
+            <input type="number" id="votesA" min="0" value="0" />
+          </label>
+          <label>Nombre de voix pour B
+            <input type="number" id="votesB" min="0" value="0" />
+          </label>
+        </div>
+        <div class="btns">
+          <button id="applyBtn">Appliquer le vote</button>
+          <button class="secondary" id="skipBtn" title="Passe à la décision suivante sans changer les jauges">Passer (test)</button>
+          <button class="secondary" id="resetBtn">Réinitialiser la partie</button>
+        </div>
+
+        <div class="end" id="endBox"></div>
+
+        <div class="log" id="log"></div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<script>
+  // ====== Configuration ======
+  const clamp = (v, min, max) => Math.max(min, Math.min(max, v));
+  const zone = (v) => (v <= 3 ? "bad" : (v <= 6 ? "warn" : "ok"));
+
+  const indicators = [
+    { key: "fin", label: "Santé financière 💰" },
+    { key: "img", label: "Image / Réputation 🌟" },
+    { key: "soc", label: "Climat social 🤝" }
+  ];
+
+  // État initial : 6/10 pour chaque jauge
+  const initialState = { fin: 6, img: 6, soc: 6 };
+
+  // Barème (10 décisions, 2 choix)
+  // Impacts: fin/img/soc
+  const decisions = [
+    {
+      title: "Décision n°1 – Politique de prix",
+      desc: "Compétitivité vs rentabilité.",
+      A: { title: "A. Baisser les prix", impact: { fin: -2, img: +1, soc: 0 } },
+      B: { title: "B. Maintenir / augmenter les prix", impact: { fin: +2, img: -1, soc: 0 } }
+    },
+    {
+      title: "Décision n°2 – Salaires",
+      desc: "Motivation vs coûts.",
+      A: { title: "A. Augmenter les salaires", impact: { fin: -2, img: +1, soc: +2 } },
+      B: { title: "B. Geler les salaires", impact: { fin: +1, img: -1, soc: -2 } }
+    },
+    {
+      title: "Décision n°3 – Emploi",
+      desc: "Capacité de production vs charges.",
+      A: { title: "A. Recruter", impact: { fin: -1, img: +1, soc: +2 } },
+      B: { title: "B. Réduire les effectifs", impact: { fin: +2, img: -2, soc: -2 } }
+    },
+    {
+      title: "Décision n°4 – Fournisseurs",
+      desc: "Coûts vs qualité & relations durables.",
+      A: { title: "A. Choisir un fournisseur moins cher", impact: { fin: +2, img: -2, soc: -1 } },
+      B: { title: "B. Garder des partenaires durables", impact: { fin: -1, img: +2, soc: +1 } }
+    },
+    {
+      title: "Décision n°5 – Innovation",
+      desc: "Court terme vs long terme.",
+      A: { title: "A. Investir dans l’innovation", impact: { fin: -2, img: +2, soc: +1 } },
+      B: { title: "B. Reporter l’investissement", impact: { fin: +1, img: -1, soc: -1 } }
+    },
+    {
+      title: "Décision n°6 – Environnement",
+      desc: "Responsabilité vs marge immédiate.",
+      A: { title: "A. Réduire l’impact environnemental", impact: { fin: -1, img: +2, soc: +1 } },
+      B: { title: "B. Ne rien changer", impact: { fin: +1, img: -2, soc: -1 } }
+    },
+    {
+      title: "Décision n°7 – Localisation",
+      desc: "Coûts vs emploi local & acceptabilité.",
+      A: { title: "A. Délocaliser une partie", impact: { fin: +2, img: -2, soc: -2 } },
+      B: { title: "B. Produire localement", impact: { fin: -1, img: +2, soc: +1 } }
+    },
+    {
+      title: "Décision n°8 – Communication",
+      desc: "Confiance vs maîtrise des risques.",
+      A: { title: "A. Transparence", impact: { fin: 0, img: +2, soc: +1 } },
+      B: { title: "B. Communication minimale", impact: { fin: +1, img: -2, soc: -1 } }
+    },
+    {
+      title: "Décision n°9 – Qualité",
+      desc: "Excellence vs coûts.",
+      A: { title: "A. Améliorer la qualité", impact: { fin: -1, img: +2, soc: +1 } },
+      B: { title: "B. Maintenir la qualité actuelle", impact: { fin: +1, img: -1, soc: -1 } }
+    },
+    {
+      title: "Décision n°10 – Bénéfices",
+      desc: "Distribuer maintenant vs investir pour demain.",
+      A: { title: "A. Verser des dividendes", impact: { fin: +1, img: -1, soc: -2 } },
+      B: { title: "B. Réinvestir les bénéfices", impact: { fin: -1, img: +1, soc: +2 } }
+    }
+  ];
+
+  // Règles additionnelles quand indicateurs en zone rouge (mémoire au tour suivant)
+  // Si Image <=3 : boycott => fin -1 automatique au prochain tour (une seule fois par tour)
+  // Si Social <=3 : grève => fin -1 automatique au prochain tour
+  function computeNextTurnPenalty(state){
+    let penalty = 0;
+    if (state.img <= 3) penalty -= 1;
+    if (state.soc <= 3) penalty -= 1;
+    return penalty; // s'applique sur fin
+  }
+
+  // ====== État du jeu ======
+  let state = { ...initialState };
+  let idx = 0;
+  let pendingPenalty = 0; // appliquée au début du prochain tour (sur fin)
+  let finished = false;
+
+  // ====== UI Helpers ======
+  const $ = (id) => document.getElementById(id);
+
+  function formatDelta(n){
+    if (n > 0) return `+${n}`;
+    return `${n}`;
+  }
+
+  function impactChips(impact){
+    const map = [
+      ["💰", impact.fin],
+      ["🌟", impact.img],
+      ["🤝", impact.soc],
+    ];
+    return map.map(([icon, v]) => {
+      const cls = v < 0 ? "bad" : (v > 0 ? "ok" : "warn");
+      return `<span><b>${icon}</b> ${formatDelta(v)}</span>`;
+    }).join("");
+  }
+
+  function renderDashboard(){
+    const dash = $("dashboard");
+    dash.innerHTML = indicators.map(ind => {
+      const v = state[ind.key];
+      const z = zone(v);
+      const segs = Array.from({length:10}).map((_,i)=>{
+        const filled = i < v;
+        const cls = filled ? `seg filled ${z}` : "seg";
+        return `<div class="${cls}"></div>`;
+      }).join("");
+      return `
+        <div class="meter">
+          <div class="meter-head">
+            <div class="name">${ind.label}</div>
+            <div class="val"><b>${v}</b>/10</div>
+          </div>
+          <div class="segments">${segs}</div>
+        </div>
+      `;
+    }).join("");
+
+    renderAlerts();
+  }
+
+  function renderAlerts(){
+    const alert = $("globalAlert");
+
+    if (finished){
+      alert.className = "alert show";
+      alert.innerHTML = "Partie terminée.";
+      return;
+    }
+
+    const bads = indicators.filter(i => state[i.key] <= 3);
+    const warns = indicators.filter(i => state[i.key] >= 4 && state[i.key] <= 6);
+
+    if (state.fin <= 0){
+      alert.className = "alert show bad";
+      alert.innerHTML = "🚨 <b>Faillite :</b> la santé financière est tombée à 0. Tout le monde perd.";
+      return;
+    }
+
+    if (bads.length){
+      alert.className = "alert show bad";
+      const names = bads.map(i => i.label).join(" • ");
+      alert.innerHTML = `⚠️ <b>Indicateur critique :</b> ${names}. Urgent d’y penser pour la prochaine décision.`;
+      return;
+    }
+
+    if (warns.length){
+      alert.className = "alert show warn";
+      const names = warns.map(i => i.label).join(" • ");
+      alert.innerHTML = `🔶 <b>Vigilance :</b> ${names}.`;
+      return;
+    }
+
+    alert.className = "alert";
+    alert.innerHTML = "";
+  }
+
+  function renderDecision(){
+    if (idx >= decisions.length){
+      finishGame();
+      return;
+    }
+
+    const d = decisions[idx];
+
+    $("dTitle").textContent = d.title;
+    $("dDesc").textContent = d.desc;
+
+    $("aTitle").textContent = d.A.title;
+    $("bTitle").textContent = d.B.title;
+
+    $("aImpact").innerHTML = impactChips(d.A.impact);
+    $("bImpact").innerHTML = impactChips(d.B.impact);
+
+    $("votesA").value = 0;
+    $("votesB").value = 0;
+
+    // Appliquer pénalité de tour au début de la décision
+    if (pendingPenalty !== 0){
+      const before = state.fin;
+      state.fin = clamp(state.fin + pendingPenalty, 0, 10);
+      logLine(`Effet automatique (tour précédent en zone rouge) : 💰 ${formatDelta(pendingPenalty)} (de ${before} à ${state.fin}).`);
+      pendingPenalty = 0;
+      renderDashboard();
+
+      if (state.fin <= 0){
+        finishGame(true);
+      }
+    }
+  }
+
+  function logLine(html){
+    const el = $("log");
+    const p = document.createElement("div");
+    p.innerHTML = html;
+    el.prepend(p);
+  }
+
+  function applyImpact(choiceKey){
+    const d = decisions[idx];
+    const c = d[choiceKey];
+
+    const before = { ...state };
+
+    state.fin = clamp(state.fin + c.impact.fin, 0, 10);
+    state.img = clamp(state.img + c.impact.img, 0, 10);
+    state.soc = clamp(state.soc + c.impact.soc, 0, 10);
+
+    renderDashboard();
+
+    logLine(`<b>${d.title}</b> — ${c.title}<br>
+      Impacts : 💰 ${formatDelta(c.impact.fin)}, 🌟 ${formatDelta(c.impact.img)}, 🤝 ${formatDelta(c.impact.soc)}<br>
+      Nouveaux scores : 💰 <b>${before.fin}→${state.fin}</b> • 🌟 <b>${before.img}→${state.img}</b> • 🤝 <b>${before.soc}→${state.soc}</b>
+    `);
+
+    // Préparer pénalité pour le tour suivant (si zones rouges)
+    const pen = computeNextTurnPenalty(state);
+    if (pen !== 0){
+      pendingPenalty = pen;
+      logLine(`⚠️ Conséquence annoncée : au prochain tour, boycott/grève ⇒ 💰 ${formatDelta(pen)} automatique.`);
+    }
+
+    // Faillite immédiate
+    if (state.fin <= 0){
+      finishGame(true);
+      return;
+    }
+
+    idx++;
+    if (idx >= decisions.length){
+      finishGame();
+      return;
+    }
+    renderDecision();
+  }
+
+  function finishGame(failed=false){
+    finished = true;
+    renderDashboard();
+
+    const end = $("endBox");
+    end.className = "end show " + (failed ? "fail" : "win");
+
+    if (failed){
+      end.innerHTML = `🚨 <b>Faillite.</b> La santé financière est à 0. <br><span class="kbd">Relance “Réinitialiser la partie” pour rejouer.</span>`;
+    } else {
+      // Verdict simple
+      const score = state.fin + state.img + state.soc;
+      let verdict = "✅ <b>Entreprise stabilisée.</b>";
+      if (state.fin <= 3 || state.img <= 3 || state.soc <= 3) verdict = "⚠️ <b>Entreprise sous tension.</b>";
+      end.innerHTML = `${verdict}<br>Scores finaux : 💰 <b>${state.fin}</b>/10 • 🌟 <b>${state.img}</b>/10 • 🤝 <b>${state.soc}</b>/10<br>
+      Total (sur 30) : <b>${score}</b>.`;
+    }
+
+    $("applyBtn").disabled = true;
+    $("skipBtn").disabled = true;
+  }
+
+  function resetGame(){
+    state = { ...initialState };
+    idx = 0;
+    pendingPenalty = 0;
+    finished = false;
+    $("applyBtn").disabled = false;
+    $("skipBtn").disabled = false;
+    $("endBox").className = "end";
+    $("endBox").innerHTML = "";
+    $("log").innerHTML = "";
+    renderDashboard();
+    renderDecision();
+    logLine(`Partie réinitialisée. Indicateurs : 💰 <b>${state.fin}</b>/10 • 🌟 <b>${state.img}</b>/10 • 🤝 <b>${state.soc}</b>/10`);
+  }
+
+  // ====== Events ======
+  $("applyBtn").addEventListener("click", () => {
+    if (finished) return;
+    const a = Number($("votesA").value || 0);
+    const b = Number($("votesB").value || 0);
+
+    if (a === b){
+      // En cas d'égalité : le choix des dirigeants (ou arbitre) décide.
+      // Ici: on choisit B par défaut, mais tu peux changer en A si tu préfères.
+      logLine(`Égalité (${a}–${b}) : arbitrage automatique ⇒ <b>Choix B</b>.`);
+      applyImpact("B");
+      return;
+    }
+
+    const winner = (a > b) ? "A" : "B";
+    logLine(`Vote : A=${a} • B=${b} ⇒ décision retenue : <b>Choix ${winner}</b>.`);
+    applyImpact(winner);
+  });
+
+  $("skipBtn").addEventListener("click", () => {
+    if (finished) return;
+    idx++;
+    if (idx >= decisions.length) finishGame();
+    else renderDecision();
+  });
+
+  $("resetBtn").addEventListener("click", resetGame);
+
+  // ====== Init ======
+  renderDashboard();
+  renderDecision();
+  logLine(`Bienvenue ! Indicateurs initiaux : 💰 <b>${state.fin}</b>/10 • 🌟 <b>${state.img}</b>/10 • 🤝 <b>${state.soc}</b>/10`);
+</script>
+</body>
+</html>
