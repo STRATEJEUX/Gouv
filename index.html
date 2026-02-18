@@ -317,5 +317,225 @@
       desc: "Nos biscuits se vendent bien, mais certains les trouvent chers.",
       illus: svgTag(),
       illusText: "Choisir un prix, c’est choisir entre ventes et marge.",
-      A:{label:"A. Baisser les prix", impa
+      A:{label:"A. Baisser les prix", impact:{fin:-2,img:+1,soc:0}, consequence:"On vend plus facilement, mais on gagne moins par biscuit."},
+      B:{label:"B. Garder des prix élevés", impact:{fin:+2,img:-1,soc:0}, consequence:"On gagne plus par biscuit, mais certains clients achètent moins."}
+    },
+    {
+      title: "Salaires",
+      desc: "Le coût de la vie augmente, les salariés demandent une hausse.",
+      illus: svgPeople(),
+      illusText: "Le moral influence la production et l’ambiance.",
+      A:{label:"A. Augmenter les salaires", impact:{fin:-2,img:+1,soc:+2}, consequence:"Les équipes sont motivées, mais l’entreprise dépense plus."},
+      B:{label:"B. Ne pas augmenter", impact:{fin:+1,img:-1,soc:-2}, consequence:"On économise, mais les salariés se démotivent."}
+    },
+    {
+      title: "Emploi",
+      desc: "Les salariés font beaucoup de tâches et sont débordés.",
+      illus: svgFactory(),
+      illusText: "Plus d’effectifs = meilleures conditions, mais plus de coûts.",
+      A:{label:"A. Embaucher", impact:{fin:-1,img:+1,soc:+2}, consequence:"Le travail devient plus fluide, mais la masse salariale augmente."},
+      B:{label:"B. Réduire les effectifs", impact:{fin:+2,img:-2,soc:-2}, consequence:"On baisse les coûts, mais l’ambiance et l’image se détériorent."}
+    },
+    {
+      title: "Fournisseurs",
+      desc: "Un fournisseur étranger propose le chocolat 4× moins cher.",
+      illus: svgTruck(),
+      illusText: "Moins cher peut créer des doutes sur qualité et confiance.",
+      A:{label:"A. Changer pour moins cher", impact:{fin:+2,img:-2,soc:-1}, consequence:"On économise, mais certains doutent de la qualité."},
+      B:{label:"B. Garder le fournisseur français", impact:{fin:-1,img:+2,soc:+1}, consequence:"C’est plus cher, mais la confiance et l’image augmentent."}
+    },
+    {
+      title: "Innovation",
+      desc: "On peut lancer une nouvelle recette, mais ça coûte cher.",
+      illus: svgBulb(),
+      illusText: "Innover aide demain, mais coûte aujourd’hui.",
+      A:{label:"A. Investir maintenant", impact:{fin:-2,img:+2,soc:+1}, consequence:"On prépare l’avenir, mais la trésorerie baisse."},
+      B:{label:"B. Attendre", impact:{fin:+1,img:-1,soc:-1}, consequence:"On garde de l’argent, mais on prend du retard."}
+    },
+    {
+      title: "Environnement",
+      desc: "Passer du plastique à du papier recyclé coûte un peu plus cher.",
+      illus: svgLeaf(),
+      illusText: "Un bon choix écolo peut améliorer l’image.",
+      A:{label:"A. Papier recyclé", impact:{fin:-1,img:+2,soc:+1}, consequence:"L’image s’améliore, mais l’emballage coûte plus cher."},
+      B:{label:"B. Plastique", impact:{fin:+1,img:-2,soc:-1}, consequence:"On économise, mais on est critiqué par certains."}
+    },
+    {
+      title: "Localisation",
+      desc: "Nouvelle usine : en France ou en Asie ?",
+      illus: svgFactory(),
+      illusText: "Le lieu de production touche coûts, emploi et image.",
+      A:{label:"A. Ouvrir en Asie", impact:{fin:+2,img:-2,soc:-2}, consequence:"Moins cher, mais image et climat social se dégradent."},
+      B:{label:"B. Ouvrir en France", impact:{fin:-1,img:+2,soc:+1}, consequence:"Plus cher, mais emploi et image s’améliorent."}
+    },
+    {
+      title: "Communication",
+      desc: "Un conservateur est controversé : on cherche une alternative.",
+      illus: svgMegaphone(),
+      illusText: "Transparence = confiance, mais risque de polémique.",
+      A:{label:"A. Être transparent", impact:{fin:0,img:+2,soc:+1}, consequence:"On explique clairement, la confiance augmente."},
+      B:{label:"B. Dire le minimum", impact:{fin:+1,img:-2,soc:-1}, consequence:"On évite la polémique, mais l’image peut baisser."}
+    },
+    {
+      title: "Qualité",
+      desc: "On peut améliorer la recette avec de meilleurs ingrédients.",
+      illus: svgStar(),
+      illusText: "Qualité = satisfaction, mais coûts plus élevés.",
+      A:{label:"A. Améliorer la qualité", impact:{fin:-1,img:+2,soc:+1}, consequence:"Les biscuits sont meilleurs, mais ça coûte plus cher."},
+      B:{label:"B. Garder la qualité", impact:{fin:+1,img:-1,soc:-1}, consequence:"On économise, mais les clients peuvent être moins contents."}
+    },
+    {
+      title: "Bénéfices",
+      desc: "On a gagné de l’argent cette année : on fait quoi ?",
+      illus: svgCoins(),
+      illusText: "Distribuer maintenant ou investir pour demain.",
+      A:{label:"A. Dividendes", impact:{fin:+1,img:-1,soc:-2}, consequence:"Les actionnaires sont contents, mais les équipes se frustrent."},
+      B:{label:"B. Réinvestir", impact:{fin:-1,img:+1,soc:+2}, consequence:"On prépare l’avenir et on motive les équipes."}
+    }
+  ];
 
+  // ===== Alerts rule: if any indicator < 2 => specific warning =====
+  function renderCriticalAlert(){
+    const a = $("globalAlert");
+
+    // faillite rule kept: fin <= 0 ends game immediately
+    if (state.fin <= 0){
+      a.className = "alert show bad";
+      a.textContent = "⚠️ Faillite : l’entreprise ne peut plus payer ses charges.";
+      return;
+    }
+
+    const warnings = [];
+    if (state.fin < 2) warnings.push("⚠️ Attention : risque de faillite imminente.");
+    if (state.img < 2) warnings.push("⚠️ Attention : risque de boycott des clients.");
+    if (state.soc < 2) warnings.push("⚠️ Attention : risque de grève des salariés.");
+
+    if (warnings.length){
+      a.className = "alert show bad";
+      a.innerHTML = warnings.join("<br>");
+    } else {
+      a.className = "alert";
+      a.innerHTML = "";
+    }
+  }
+
+  // ===== Dashboard render =====
+  function renderDashboard(){
+    const dash = $("dashboard");
+    dash.innerHTML = indicators.map(ind => {
+      const v = state[ind.key];
+      const z = zone(v);
+      const segs = Array.from({length:10}).map((_,i)=>{
+        const filled = i < v;
+        const cls = filled ? `seg filled ${z}` : "seg";
+        return `<div class="${cls}"></div>`;
+      }).join("");
+      return `
+        <div class="meter">
+          <div class="meter-head">
+            <div class="name">${ind.label}</div>
+            <div class="val"><b>${v}</b>/10</div>
+          </div>
+          <div class="segments">${segs}</div>
+        </div>
+      `;
+    }).join("");
+
+    renderCriticalAlert();
+  }
+
+  // ===== Game state =====
+  let state = { ...initialState };
+  let idx = 0;
+  let finished = false;
+
+  function resetReveal(){
+    $("reveal").classList.remove("show");
+    $("revealText").textContent = "";
+    $("nextBtn").disabled = true;
+    $("btnA").disabled = false;
+    $("btnB").disabled = false;
+  }
+
+  function renderDecision(){
+    if (idx >= decisions.length){
+      finishGame(false);
+      return;
+    }
+    const d = decisions[idx];
+    $("stepBadge").textContent = `Décision ${idx+1}/10`;
+    $("dTitle").textContent = d.title;
+    $("dDesc").textContent = d.desc;
+    $("illusSvg").innerHTML = d.illus;
+    $("illusText").textContent = d.illusText;
+    $("btnA").textContent = d.A.label;
+    $("btnB").textContent = d.B.label;
+    resetReveal();
+  }
+
+  function applyChoice(choiceKey){
+    if (finished) return;
+
+    const d = decisions[idx];
+    const c = d[choiceKey];
+
+    // reveal consequence AFTER click
+    $("revealText").textContent = c.consequence;
+    $("reveal").classList.add("show");
+
+    // apply impact
+    state.fin = clamp(state.fin + c.impact.fin, 0, 10);
+    state.img = clamp(state.img + c.impact.img, 0, 10);
+    state.soc = clamp(state.soc + c.impact.soc, 0, 10);
+
+    renderDashboard();
+
+    $("btnA").disabled = true;
+    $("btnB").disabled = true;
+
+    if (state.fin <= 0){
+      finishGame(true);
+      return;
+    }
+    $("nextBtn").disabled = false;
+  }
+
+  function finishGame(failed){
+    finished = true;
+    renderDashboard();
+    $("btnA").disabled = true;
+    $("btnB").disabled = true;
+    $("nextBtn").disabled = true;
+
+    const end = $("endBox");
+    end.className = "end show " + (failed ? "fail" : "win");
+
+    if (failed){
+      end.textContent = "Faillite.";
+    } else {
+      end.textContent = "Fin.";
+    }
+  }
+
+  function resetGame(){
+    state = { ...initialState };
+    idx = 0;
+    finished = false;
+    $("endBox").className = "end";
+    $("endBox").textContent = "";
+    renderDashboard();
+    renderDecision();
+  }
+
+  // ===== Events =====
+  $("btnA").addEventListener("click", () => applyChoice("A"));
+  $("btnB").addEventListener("click", () => applyChoice("B"));
+  $("nextBtn").addEventListener("click", () => { if (!finished) { idx++; renderDecision(); } });
+  $("resetBtn").addEventListener("click", resetGame);
+
+  // ===== Init =====
+  renderDashboard();
+  renderDecision();
+</script>
+</body>
+</html>
