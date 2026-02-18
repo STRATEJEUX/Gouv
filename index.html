@@ -3,11 +3,11 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Biscuits & Parties prenantes</title>
+  <title>Biscuits — Jeu de décisions</title>
   <style>
     :root{
       --bg:#ffffff;
-      --text:#111827;
+      --text:#0f172a;
       --muted:#6b7280;
       --line:#e5e7eb;
       --card:#ffffff;
@@ -15,64 +15,45 @@
       --warn:#f59e0b;
       --bad:#dc2626;
       --shadow: 0 10px 25px rgba(0,0,0,.06);
-      --radius: 16px;
+      --radius: 18px;
     }
     *{box-sizing:border-box}
     body{
       margin:0;
       font-family: system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
       background: var(--bg);
-      color: var(--text);
+      color:var(--text);
       line-height:1.35;
     }
 
-    /* ===== Header (dashboard) ===== */
+    /* ===== Header (minimal dashboard only) ===== */
     header{
       position: sticky;
       top:0;
-      z-index: 5;
-      background: rgba(255,255,255,.92);
+      z-index:5;
+      background: rgba(255,255,255,.96);
       backdrop-filter: blur(8px);
       border-bottom: 1px solid var(--line);
     }
-    .wrap{max-width:1100px;margin:0 auto;padding:18px 18px 22px}
-    .top{
-      display:flex; gap:12px; align-items:flex-end; justify-content:space-between; flex-wrap:wrap;
-    }
-    h1{
-      margin:0;
-      font-size:16px;
-      letter-spacing:.2px;
-      font-weight:800;
-    }
-    .sub{
-      margin:4px 0 0 0;
-      color: var(--muted);
-      font-size: 13px;
-    }
-
+    .wrap{max-width:980px;margin:0 auto;padding:16px 16px 18px}
     .dashboard{
       display:grid;
       grid-template-columns: 1fr;
       gap:10px;
-      margin-top:14px;
     }
     .meter{
-      border: 1px solid var(--line);
+      border:1px solid var(--line);
       border-radius: 14px;
-      padding:12px 12px 10px;
+      padding:12px;
       background: var(--card);
       box-shadow: var(--shadow);
     }
     .meter-head{
-      display:flex;
-      justify-content:space-between;
-      align-items:baseline;
-      gap:12px;
+      display:flex; justify-content:space-between; align-items:baseline; gap:12px;
       margin-bottom:8px;
     }
-    .meter-head .name{font-weight:750;font-size:13px}
-    .meter-head .val{color:var(--muted); font-size:13px}
+    .meter-head .name{font-weight:800;font-size:13px}
+    .meter-head .val{color:var(--muted);font-size:13px}
     .segments{
       display:grid;
       grid-template-columns: repeat(10, 1fr);
@@ -81,8 +62,8 @@
     .seg{
       height:12px;
       border-radius: 6px;
-      background: #f3f4f6;
-      border: 1px solid #f3f4f6;
+      background:#f3f4f6;
+      border:1px solid #f3f4f6;
     }
     .seg.filled.ok{background: rgba(22,163,74,.92); border-color: rgba(22,163,74,.25)}
     .seg.filled.warn{background: rgba(245,158,11,.92); border-color: rgba(245,158,11,.25)}
@@ -91,18 +72,17 @@
     .alert{
       margin-top:10px;
       padding:10px 12px;
-      border-radius: 12px;
-      border: 1px solid var(--line);
-      background: #fafafa;
+      border-radius: 14px;
+      border:1px solid var(--line);
+      background:#fafafa;
       color: var(--muted);
-      display:none;
       font-size: 13px;
+      display:none;
     }
     .alert.show{display:block}
     .alert.bad{border-color: rgba(220,38,38,.25); background: rgba(220,38,38,.06); color:#7f1d1d}
-    .alert.warn{border-color: rgba(245,158,11,.25); background: rgba(245,158,11,.07); color:#7c2d12}
 
-    /* ===== Main layout ===== */
+    /* ===== Main decision area ===== */
     main .card{
       margin-top:18px;
       background: var(--card);
@@ -111,57 +91,36 @@
       box-shadow: var(--shadow);
       overflow:hidden;
     }
-    .grid{
-      display:grid;
-      grid-template-columns: 1.25fr .75fr;
-      gap:0;
-    }
-    @media (max-width: 900px){
-      .grid{grid-template-columns: 1fr}
-    }
-    .left{
-      padding:22px;
-      border-right:1px solid var(--line);
-    }
-    @media (max-width: 900px){
-      .left{border-right:none;border-bottom:1px solid var(--line)}
-    }
-    .right{
-      padding:18px;
-      background:#fcfcfc;
-    }
-
-    /* Decision block */
-    .badge{
+    .content{padding:22px}
+    .step{
       display:inline-flex;
       align-items:center;
-      gap:8px;
       padding:6px 10px;
       border:1px solid var(--line);
-      border-radius:999px;
+      border-radius: 999px;
       color: var(--muted);
       font-size: 12px;
     }
     .dTitle{
       margin:12px 0 8px 0;
-      font-size: 26px;
+      font-size: 28px;
       line-height:1.1;
       font-weight: 900;
-      letter-spacing: .2px;
+      letter-spacing:.2px;
     }
     .dDesc{
       margin:0;
       color: var(--muted);
       font-size: 15px;
-      max-width: 62ch;
+      max-width: 64ch;
     }
     .illus{
-      margin:18px 0 8px 0;
+      margin:18px 0 10px 0;
       width:100%;
-      max-width: 520px;
+      max-width: 560px;
       border:1px solid var(--line);
       border-radius: 18px;
-      background: #ffffff;
+      background:#fff;
       padding:14px;
     }
     .illusRow{
@@ -174,25 +133,37 @@
       font-size: 13px;
     }
 
-    /* Buttons at bottom */
+    .reveal{
+      margin-top:14px;
+      padding:12px 14px;
+      border:1px solid var(--line);
+      border-radius: 14px;
+      background:#fafafa;
+      display:none;
+    }
+    .reveal.show{display:block}
+    .reveal .text{
+      font-size: 15px;
+      font-weight: 800;
+    }
+
     .actions{
-      margin-top: 20px;
+      margin-top: 18px;
       display:flex;
       gap:12px;
       flex-wrap:wrap;
       align-items:center;
-      justify-content:flex-start;
     }
     button{
       cursor:pointer;
       border:1px solid var(--line);
-      background: #111827;
-      color: #fff;
+      background:#0f172a;
+      color:#fff;
       padding:12px 14px;
       border-radius: 14px;
-      font-weight: 800;
+      font-weight: 850;
       letter-spacing:.2px;
-      min-width: 220px;
+      min-width: 240px;
       text-align:left;
     }
     button:hover{opacity:.92}
@@ -201,59 +172,14 @@
       color: var(--text);
       border-color: var(--line);
       min-width: unset;
-      font-weight: 750;
+      font-weight: 800;
     }
-    button:disabled{
-      opacity:.5;
-      cursor:not-allowed;
-    }
+    button:disabled{opacity:.5; cursor:not-allowed}
 
-    /* Consequence reveal */
-    .reveal{
-      margin-top:16px;
-      padding:12px 14px;
-      border:1px solid var(--line);
-      border-radius: 14px;
-      background:#fafafa;
-      display:none;
-    }
-    .reveal.show{display:block}
-    .reveal .label{
-      font-size: 12px;
-      color: var(--muted);
-      margin-bottom: 6px;
-    }
-    .reveal .text{
-      font-size: 15px;
-      font-weight: 750;
-    }
-
-    /* Right panel */
-    .panelTitle{
-      font-size: 13px;
-      font-weight: 850;
-      margin:0 0 10px 0;
-      color: var(--text);
-    }
-    .small{
-      font-size:12px;
-      color: var(--muted);
-      margin:0 0 12px 0;
-    }
-    .log{
-      border-top:1px solid var(--line);
-      padding-top:12px;
-      margin-top:12px;
-      max-height: 340px;
-      overflow:auto;
-      font-size: 12px;
-      color: var(--muted);
-    }
-    .log b{color: var(--text)}
     .end{
       display:none;
-      margin-top:12px;
-      padding:12px 12px;
+      margin-top:14px;
+      padding:12px 14px;
       border-radius: 14px;
       border:1px solid var(--line);
       background:#fff;
@@ -263,11 +189,9 @@
     .end.fail{border-color: rgba(220,38,38,.25); background: rgba(220,38,38,.06); color:#7f1d1d}
     .end.win{border-color: rgba(22,163,74,.25); background: rgba(22,163,74,.06); color:#14532d}
 
-    .rowBtns{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      margin-top:12px;
+    @media (max-width: 520px){
+      button{min-width: 100%;}
+      .dTitle{font-size: 24px}
     }
   </style>
 </head>
@@ -275,14 +199,6 @@
 <body>
 <header>
   <div class="wrap">
-    <div class="top">
-      <div>
-        <h1>Biscuits & Parties prenantes</h1>
-        <p class="sub">Clique sur A ou B. La conséquence apparaît, puis les jauges se mettent à jour. Si 💰 tombe à 0 : faillite.</p>
-      </div>
-      <div class="badge">Échelle 0–10 • Rouge 0–3 • Orange 4–6 • Vert 7–10</div>
-    </div>
-
     <div class="dashboard" id="dashboard"></div>
     <div class="alert" id="globalAlert"></div>
   </div>
@@ -291,533 +207,115 @@
 <main>
   <div class="wrap">
     <div class="card">
-      <div class="grid">
-        <!-- LEFT: decision -->
-        <section class="left">
-          <div class="badge" id="stepBadge">Décision 1/10</div>
+      <div class="content">
+        <div class="step" id="stepBadge">Décision 1/10</div>
 
-          <h2 class="dTitle" id="dTitle">Décision</h2>
-          <p class="dDesc" id="dDesc"></p>
+        <h2 class="dTitle" id="dTitle"></h2>
+        <p class="dDesc" id="dDesc"></p>
 
-          <div class="illus" id="illusBox">
-            <div class="illusRow">
-              <div id="illusSvg" aria-hidden="true"></div>
-              <div>
-                <div style="font-weight:850">Fabrique de biscuits</div>
-                <div class="illusText" id="illusText">Un petit visuel pour se mettre dans l’histoire.</div>
-              </div>
+        <div class="illus">
+          <div class="illusRow">
+            <div id="illusSvg" aria-hidden="true"></div>
+            <div>
+              <div style="font-weight:900">Biscuits</div>
+              <div class="illusText" id="illusText"></div>
             </div>
           </div>
+        </div>
 
-          <!-- Consequence (hidden until click) -->
-          <div class="reveal" id="reveal">
-            <div class="label">Conséquence</div>
-            <div class="text" id="revealText"></div>
-          </div>
+        <div class="reveal" id="reveal">
+          <div class="text" id="revealText"></div>
+        </div>
 
-          <!-- Buttons bottom -->
-          <div class="actions">
-            <button id="btnA">Choix A</button>
-            <button id="btnB">Choix B</button>
-            <button class="secondary" id="nextBtn" disabled>Décision suivante</button>
-          </div>
-        </section>
+        <div class="actions">
+          <button id="btnA"></button>
+          <button id="btnB"></button>
+          <button class="secondary" id="nextBtn" disabled>Suivant</button>
+          <button class="secondary" id="resetBtn">Réinitialiser</button>
+        </div>
 
-        <!-- RIGHT: minimal panel -->
-        <aside class="right">
-          <p class="panelTitle">Suivi</p>
-          <p class="small">Tu peux laisser cette zone affichée au vidéoprojecteur pour garder une trace des décisions.</p>
-
-          <div class="rowBtns">
-            <button class="secondary" id="resetBtn">Réinitialiser</button>
-          </div>
-
-          <div class="end" id="endBox"></div>
-          <div class="log" id="log"></div>
-        </aside>
+        <div class="end" id="endBox"></div>
       </div>
     </div>
   </div>
 </main>
 
 <script>
-  // ===== Utilities =====
+  // ===== Utils =====
   const clamp = (v, min, max) => Math.max(min, Math.min(max, v));
   const zone = (v) => (v <= 3 ? "bad" : (v <= 6 ? "warn" : "ok"));
   const $ = (id) => document.getElementById(id);
-  const formatDelta = (n) => (n > 0 ? `+${n}` : `${n}`);
 
   // ===== Indicators =====
   const indicators = [
     { key: "fin", label: "Santé financière 💰" },
-    { key: "img", label: "Image / Réputation 🌟" },
+    { key: "img", label: "Image 🌟" },
     { key: "soc", label: "Climat social 🤝" }
   ];
   const initialState = { fin: 6, img: 6, soc: 6 };
 
-  // ===== Minimal inline SVGs (no external images) =====
-  function svgCookie(){
-    return `
-      <svg width="54" height="54" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="32" cy="32" r="22" stroke="#111827" stroke-width="2" fill="#fff"/>
-        <circle cx="24" cy="26" r="3" fill="#111827"/>
-        <circle cx="38" cy="24" r="3" fill="#111827"/>
-        <circle cx="40" cy="38" r="3" fill="#111827"/>
-        <circle cx="26" cy="40" r="3" fill="#111827"/>
-        <path d="M15 33c5 2 8 8 17 8s12-6 17-8" stroke="#111827" stroke-width="2" stroke-linecap="round"/>
-      </svg>`;
-  }
-  function svgTag(){
-    return `
-      <svg width="54" height="54" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M10 24l18-14h22l4 22-18 22L10 24z" stroke="#111827" stroke-width="2" fill="#fff"/>
-        <circle cx="44" cy="18" r="3" fill="#111827"/>
-        <path d="M28 14l22 22" stroke="#111827" stroke-width="2" stroke-linecap="round"/>
-      </svg>`;
-  }
-  function svgPeople(){
-    return `
-      <svg width="54" height="54" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="24" cy="26" r="7" stroke="#111827" stroke-width="2" fill="#fff"/>
-        <circle cx="42" cy="26" r="7" stroke="#111827" stroke-width="2" fill="#fff"/>
-        <path d="M12 52c2-10 8-14 12-14s10 4 12 14" stroke="#111827" stroke-width="2" stroke-linecap="round"/>
-        <path d="M28 52c2-10 8-14 12-14s10 4 12 14" stroke="#111827" stroke-width="2" stroke-linecap="round"/>
-      </svg>`;
-  }
-  function svgTruck(){
-    return `
-      <svg width="54" height="54" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M8 18h30v26H8V18z" stroke="#111827" stroke-width="2" fill="#fff"/>
-        <path d="M38 28h10l8 8v8H38V28z" stroke="#111827" stroke-width="2" fill="#fff"/>
-        <circle cx="20" cy="46" r="4" fill="#111827"/>
-        <circle cx="46" cy="46" r="4" fill="#111827"/>
-      </svg>`;
-  }
-  function svgBulb(){
-    return `
-      <svg width="54" height="54" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M32 10c-10 0-18 7-18 17 0 7 4 12 9 15 2 1 3 3 3 5h12c0-2 1-4 3-5 5-3 9-8 9-15 0-10-8-17-18-17z" stroke="#111827" stroke-width="2" fill="#fff"/>
-        <path d="M26 52h12M26 56h12" stroke="#111827" stroke-width="2" stroke-linecap="round"/>
-      </svg>`;
-  }
-  function svgLeaf(){
-    return `
-      <svg width="54" height="54" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M52 12C30 14 18 26 14 48c22-4 34-16 38-36z" stroke="#111827" stroke-width="2" fill="#fff"/>
-        <path d="M18 44c8-8 18-14 28-18" stroke="#111827" stroke-width="2" stroke-linecap="round"/>
-      </svg>`;
-  }
-  function svgFactory(){
-    return `
-      <svg width="54" height="54" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M10 52V28l14 10V28l14 10V28l16 10v14H10z" stroke="#111827" stroke-width="2" fill="#fff"/>
-        <path d="M14 52V20h10v32" stroke="#111827" stroke-width="2"/>
-        <path d="M40 52V18h8v34" stroke="#111827" stroke-width="2"/>
-      </svg>`;
-  }
-  function svgMegaphone(){
-    return `
-      <svg width="54" height="54" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M10 30h10l22-10v28L20 38H10V30z" stroke="#111827" stroke-width="2" fill="#fff"/>
-        <path d="M20 38l4 12h8l-6-14" stroke="#111827" stroke-width="2" stroke-linecap="round"/>
-        <path d="M46 24c4 4 4 12 0 16" stroke="#111827" stroke-width="2" stroke-linecap="round"/>
-      </svg>`;
-  }
-  function svgStar(){
-    return `
-      <svg width="54" height="54" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M32 10l6 14 15 2-11 10 3 15-13-8-13 8 3-15-11-10 15-2 6-14z"
-          stroke="#111827" stroke-width="2" fill="#fff"/>
-      </svg>`;
-  }
-  function svgCoins(){
-    return `
-      <svg width="54" height="54" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <ellipse cx="26" cy="20" rx="12" ry="6" stroke="#111827" stroke-width="2" fill="#fff"/>
-        <path d="M14 20v10c0 3 5 6 12 6s12-3 12-6V20" stroke="#111827" stroke-width="2" fill="#fff"/>
-        <ellipse cx="38" cy="34" rx="12" ry="6" stroke="#111827" stroke-width="2" fill="#fff"/>
-        <path d="M26 34v10c0 3 5 6 12 6s12-3 12-6V34" stroke="#111827" stroke-width="2" fill="#fff"/>
-      </svg>`;
-  }
+  // ===== Minimal inline SVGs (no external assets) =====
+  function svgTag(){return `
+    <svg width="54" height="54" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M10 24l18-14h22l4 22-18 22L10 24z" stroke="#0f172a" stroke-width="2" fill="#fff"/>
+      <circle cx="44" cy="18" r="3" fill="#0f172a"/>
+      <path d="M28 14l22 22" stroke="#0f172a" stroke-width="2" stroke-linecap="round"/>
+    </svg>`;}
+  function svgPeople(){return `
+    <svg width="54" height="54" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="24" cy="26" r="7" stroke="#0f172a" stroke-width="2" fill="#fff"/>
+      <circle cx="42" cy="26" r="7" stroke="#0f172a" stroke-width="2" fill="#fff"/>
+      <path d="M12 52c2-10 8-14 12-14s10 4 12 14" stroke="#0f172a" stroke-width="2" stroke-linecap="round"/>
+      <path d="M28 52c2-10 8-14 12-14s10 4 12 14" stroke="#0f172a" stroke-width="2" stroke-linecap="round"/>
+    </svg>`;}
+  function svgTruck(){return `
+    <svg width="54" height="54" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M8 18h30v26H8V18z" stroke="#0f172a" stroke-width="2" fill="#fff"/>
+      <path d="M38 28h10l8 8v8H38V28z" stroke="#0f172a" stroke-width="2" fill="#fff"/>
+      <circle cx="20" cy="46" r="4" fill="#0f172a"/>
+      <circle cx="46" cy="46" r="4" fill="#0f172a"/>
+    </svg>`;}
+  function svgBulb(){return `
+    <svg width="54" height="54" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M32 10c-10 0-18 7-18 17 0 7 4 12 9 15 2 1 3 3 3 5h12c0-2 1-4 3-5 5-3 9-8 9-15 0-10-8-17-18-17z" stroke="#0f172a" stroke-width="2" fill="#fff"/>
+      <path d="M26 52h12M26 56h12" stroke="#0f172a" stroke-width="2" stroke-linecap="round"/>
+    </svg>`;}
+  function svgLeaf(){return `
+    <svg width="54" height="54" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M52 12C30 14 18 26 14 48c22-4 34-16 38-36z" stroke="#0f172a" stroke-width="2" fill="#fff"/>
+      <path d="M18 44c8-8 18-14 28-18" stroke="#0f172a" stroke-width="2" stroke-linecap="round"/>
+    </svg>`;}
+  function svgFactory(){return `
+    <svg width="54" height="54" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M10 52V28l14 10V28l14 10V28l16 10v14H10z" stroke="#0f172a" stroke-width="2" fill="#fff"/>
+      <path d="M14 52V20h10v32" stroke="#0f172a" stroke-width="2"/>
+      <path d="M40 52V18h8v34" stroke="#0f172a" stroke-width="2"/>
+    </svg>`;}
+  function svgMegaphone(){return `
+    <svg width="54" height="54" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M10 30h10l22-10v28L20 38H10V30z" stroke="#0f172a" stroke-width="2" fill="#fff"/>
+      <path d="M20 38l4 12h8l-6-14" stroke="#0f172a" stroke-width="2" stroke-linecap="round"/>
+      <path d="M46 24c4 4 4 12 0 16" stroke="#0f172a" stroke-width="2" stroke-linecap="round"/>
+    </svg>`;}
+  function svgStar(){return `
+    <svg width="54" height="54" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M32 10l6 14 15 2-11 10 3 15-13-8-13 8 3-15-11-10 15-2 6-14z"
+        stroke="#0f172a" stroke-width="2" fill="#fff"/>
+    </svg>`;}
+  function svgCoins(){return `
+    <svg width="54" height="54" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <ellipse cx="26" cy="20" rx="12" ry="6" stroke="#0f172a" stroke-width="2" fill="#fff"/>
+      <path d="M14 20v10c0 3 5 6 12 6s12-3 12-6V20" stroke="#0f172a" stroke-width="2" fill="#fff"/>
+      <ellipse cx="38" cy="34" rx="12" ry="6" stroke="#0f172a" stroke-width="2" fill="#fff"/>
+      <path d="M26 34v10c0 3 5 6 12 6s12-3 12-6V34" stroke="#0f172a" stroke-width="2" fill="#fff"/>
+    </svg>`;}
 
-  // ===== Decisions (same impacts as before) + 1 simple consequence sentence per choice + an illustration =====
+  // ===== Decisions: same impacts + simple consequences + illustration =====
   const decisions = [
     {
       title: "Politique de prix",
       desc: "Nos biscuits se vendent bien, mais certains les trouvent chers.",
       illus: svgTag(),
-      illusText: "Un choix de prix change vite les ventes et l’argent qui rentre.",
-      A: {
-        label: "A. Baisser les prix",
-        impact: { fin: -2, img: +1, soc: 0 },
-        consequence: "On vend plus facilement, mais on gagne moins d’argent par biscuit."
-      },
-      B: {
-        label: "B. Garder des prix plus élevés",
-        impact: { fin: +2, img: -1, soc: 0 },
-        consequence: "On gagne plus par biscuit, mais certains clients achètent moins."
-      }
-    },
-    {
-      title: "Salaires",
-      desc: "Le coût de la vie augmente, les salariés demandent une hausse.",
-      illus: svgPeople(),
-      illusText: "Le moral des équipes change la production et l’ambiance.",
-      A: {
-        label: "A. Augmenter les salaires",
-        impact: { fin: -2, img: +1, soc: +2 },
-        consequence: "Les salariés sont contents, mais l’entreprise dépense plus chaque mois."
-      },
-      B: {
-        label: "B. Ne pas augmenter",
-        impact: { fin: +1, img: -1, soc: -2 },
-        consequence: "On économise, mais les salariés se démotivent et se plaignent."
-      }
-    },
-    {
-      title: "Emploi",
-      desc: "Les salariés font beaucoup de tâches et sont parfois débordés.",
-      illus: svgFactory(),
-      illusText: "Plus de mains aide la qualité, mais coûte plus cher.",
-      A: {
-        label: "A. Embaucher",
-        impact: { fin: -1, img: +1, soc: +2 },
-        consequence: "Le travail est plus confortable, mais la masse salariale augmente."
-      },
-      B: {
-        label: "B. Réduire les effectifs",
-        impact: { fin: +2, img: -2, soc: -2 },
-        consequence: "On coupe les coûts, mais l’image et le climat social se dégradent."
-      }
-    },
-    {
-      title: "Fournisseurs",
-      desc: "Un ingrédient clé (chocolat) est 4× moins cher à l’étranger.",
-      illus: svgTruck(),
-      illusText: "Moins cher peut être risqué : qualité, délais, confiance.",
-      A: {
-        label: "A. Passer au fournisseur étranger",
-        impact: { fin: +2, img: -2, soc: -1 },
-        consequence: "Ça coûte moins cher, mais certains doutent de la qualité et du choix."
-      },
-      B: {
-        label: "B. Garder le fournisseur français",
-        impact: { fin: -1, img: +2, soc: +1 },
-        consequence: "C’est plus cher, mais on garde la confiance et une meilleure image."
-      }
-    },
-    {
-      title: "Innovation",
-      desc: "On peut lancer une nouvelle recette de biscuits, mais cela coûte cher.",
-      illus: svgBulb(),
-      illusText: "Innover peut rapporter plus tard, mais coûte maintenant.",
-      A: {
-        label: "A. Investir maintenant",
-        impact: { fin: -2, img: +2, soc: +1 },
-        consequence: "On prépare l’avenir, mais la trésorerie baisse tout de suite."
-      },
-      B: {
-        label: "B. Attendre",
-        impact: { fin: +1, img: -1, soc: -1 },
-        consequence: "On garde de l’argent, mais on progresse moins vite que les concurrents."
-      }
-    },
-    {
-      title: "Environnement",
-      desc: "On peut remplacer le plastique par du papier recyclé, un peu plus cher.",
-      illus: svgLeaf(),
-      illusText: "Les bons choix écolo améliorent l’image, mais coûtent parfois plus.",
-      A: {
-        label: "A. Passer au papier recyclé",
-        impact: { fin: -1, img: +2, soc: +1 },
-        consequence: "L’image s’améliore, mais l’emballage coûte plus cher."
-      },
-      B: {
-        label: "B. Garder le plastique",
-        impact: { fin: +1, img: -2, soc: -1 },
-        consequence: "On économise, mais l’image se dégrade auprès de certains."
-      }
-    },
-    {
-      title: "Localisation",
-      desc: "On doit ouvrir une nouvelle usine : France ou Asie ?",
-      illus: svgFactory(),
-      illusText: "Le lieu de production touche l’emploi, les coûts et l’image.",
-      A: {
-        label: "A. Ouvrir en Asie",
-        impact: { fin: +2, img: -2, soc: -2 },
-        consequence: "Ça coûte moins cher, mais l’image et le climat social se dégradent."
-      },
-      B: {
-        label: "B. Ouvrir en France",
-        impact: { fin: -1, img: +2, soc: +1 },
-        consequence: "C’est plus cher, mais on soutient l’emploi et on améliore l’image."
-      }
-    },
-    {
-      title: "Communication",
-      desc: "Un conservateur est controversé : on l’utilise encore, mais on cherche une alternative.",
-      illus: svgMegaphone(),
-      illusText: "Dire la vérité renforce la confiance… mais peut inquiéter.",
-      A: {
-        label: "A. Être transparent",
-        impact: { fin: 0, img: +2, soc: +1 },
-        consequence: "On explique clairement, la confiance augmente malgré l’inquiétude."
-      },
-      B: {
-        label: "B. Communiquer le minimum",
-        impact: { fin: +1, img: -2, soc: -1 },
-        consequence: "On évite la polémique maintenant, mais l’image peut se détériorer."
-      }
-    },
-    {
-      title: "Qualité",
-      desc: "On peut améliorer la recette (meilleurs ingrédients), mais ça coûte plus cher.",
-      illus: svgStar(),
-      illusText: "La qualité fait revenir les clients, mais pèse sur les coûts.",
-      A: {
-        label: "A. Améliorer la qualité",
-        impact: { fin: -1, img: +2, soc: +1 },
-        consequence: "Les biscuits sont meilleurs, mais les coûts de production augmentent."
-      },
-      B: {
-        label: "B. Garder la qualité actuelle",
-        impact: { fin: +1, img: -1, soc: -1 },
-        consequence: "On économise, mais les clients peuvent être moins satisfaits."
-      }
-    },
-    {
-      title: "Bénéfices",
-      desc: "L’entreprise a gagné de l’argent cette année : que faire ?",
-      illus: svgCoins(),
-      illusText: "Distribuer fait plaisir maintenant, réinvestir aide demain.",
-      A: {
-        label: "A. Verser des dividendes",
-        impact: { fin: +1, img: -1, soc: -2 },
-        consequence: "Les actionnaires sont contents, mais les salariés se sentent oubliés."
-      },
-      B: {
-        label: "B. Réinvestir dans l’entreprise",
-        impact: { fin: -1, img: +1, soc: +2 },
-        consequence: "On prépare l’avenir et on motive les équipes, mais on distribue moins."
-      }
-    }
-  ];
+      illusText: "Choisir un prix, c’est choisir entre ventes et marge.",
+      A:{label:"A. Baisser les prix", impa
 
-  // Règles de “mémoire” (comme avant) : si Image <=3 ou Social <=3 => -1 fin au prochain tour
-  function computeNextTurnPenalty(state){
-    let pen = 0;
-    if (state.img <= 3) pen -= 1;
-    if (state.soc <= 3) pen -= 1;
-    return pen;
-  }
-
-  // ===== Game state =====
-  let state = { ...initialState };
-  let idx = 0;
-  let pendingPenalty = 0;
-  let finished = false;
-
-  // ===== Render dashboard =====
-  function renderDashboard(){
-    const dash = $("dashboard");
-    dash.innerHTML = indicators.map(ind => {
-      const v = state[ind.key];
-      const z = zone(v);
-      const segs = Array.from({length:10}).map((_,i)=>{
-        const filled = i < v;
-        const cls = filled ? `seg filled ${z}` : "seg";
-        return `<div class="${cls}"></div>`;
-      }).join("");
-      return `
-        <div class="meter">
-          <div class="meter-head">
-            <div class="name">${ind.label}</div>
-            <div class="val"><b>${v}</b>/10</div>
-          </div>
-          <div class="segments">${segs}</div>
-        </div>
-      `;
-    }).join("");
-
-    renderAlerts();
-  }
-
-  function renderAlerts(){
-    const alert = $("globalAlert");
-
-    if (state.fin <= 0){
-      alert.className = "alert show bad";
-      alert.innerHTML = "🚨 Faillite : la santé financière est tombée à 0.";
-      return;
-    }
-    if (finished){
-      alert.className = "alert show";
-      alert.innerHTML = "Partie terminée.";
-      return;
-    }
-
-    const bads = indicators.filter(i => state[i.key] <= 3);
-    const warns = indicators.filter(i => state[i.key] >= 4 && state[i.key] <= 6);
-
-    if (bads.length){
-      alert.className = "alert show bad";
-      alert.innerHTML = "⚠️ Indicateur critique : pense-y pour la prochaine décision.";
-      return;
-    }
-    if (warns.length){
-      alert.className = "alert show warn";
-      alert.innerHTML = "🔶 Zone de vigilance : attention aux prochains choix.";
-      return;
-    }
-    alert.className = "alert";
-    alert.innerHTML = "";
-  }
-
-  // ===== Decision rendering =====
-  function logLine(html){
-    const el = $("log");
-    const div = document.createElement("div");
-    div.innerHTML = html;
-    el.prepend(div);
-  }
-
-  function resetReveal(){
-    $("reveal").classList.remove("show");
-    $("revealText").textContent = "";
-    $("nextBtn").disabled = true;
-    $("btnA").disabled = false;
-    $("btnB").disabled = false;
-  }
-
-  function renderDecision(){
-    if (idx >= decisions.length){
-      finishGame(false);
-      return;
-    }
-
-    // apply pending penalty at start of turn
-    if (pendingPenalty !== 0){
-      const before = state.fin;
-      state.fin = clamp(state.fin + pendingPenalty, 0, 10);
-      logLine(`Effet automatique (zone rouge au tour précédent) : 💰 ${formatDelta(pendingPenalty)} (de <b>${before}</b> à <b>${state.fin}</b>).`);
-      pendingPenalty = 0;
-      renderDashboard();
-      if (state.fin <= 0){
-        finishGame(true);
-        return;
-      }
-    }
-
-    const d = decisions[idx];
-    $("stepBadge").textContent = `Décision ${idx+1}/10`;
-    $("dTitle").textContent = d.title;
-    $("dDesc").textContent = d.desc;
-
-    $("illusSvg").innerHTML = d.illus || svgCookie();
-    $("illusText").textContent = d.illusText || "Une petite scène pour se projeter.";
-
-    $("btnA").textContent = d.A.label;
-    $("btnB").textContent = d.B.label;
-
-    resetReveal();
-  }
-
-  // ===== Apply choice =====
-  function applyChoice(choiceKey){
-    if (finished) return;
-
-    const d = decisions[idx];
-    const c = d[choiceKey];
-
-    // show consequence AFTER click
-    $("revealText").textContent = c.consequence;
-    $("reveal").classList.add("show");
-
-    // apply impact
-    const before = { ...state };
-    state.fin = clamp(state.fin + c.impact.fin, 0, 10);
-    state.img = clamp(state.img + c.impact.img, 0, 10);
-    state.soc = clamp(state.soc + c.impact.soc, 0, 10);
-
-    renderDashboard();
-
-    logLine(`<b>Décision ${idx+1} – ${d.title}</b><br>
-      Choix <b>${choiceKey}</b> : ${c.consequence}<br>
-      Jauges : 💰 <b>${before.fin}→${state.fin}</b> • 🌟 <b>${before.img}→${state.img}</b> • 🤝 <b>${before.soc}→${state.soc}</b>
-    `);
-
-    // prepare next-turn penalty
-    const pen = computeNextTurnPenalty(state);
-    if (pen !== 0){
-      pendingPenalty = pen;
-      logLine(`⚠️ Annonce : au prochain tour, boycott/grève ⇒ 💰 ${formatDelta(pen)} automatique.`);
-    }
-
-    // disable choice buttons, enable next
-    $("btnA").disabled = true;
-    $("btnB").disabled = true;
-
-    if (state.fin <= 0){
-      finishGame(true);
-      return;
-    }
-    $("nextBtn").disabled = false;
-  }
-
-  function finishGame(failed){
-    finished = true;
-    renderDashboard();
-
-    $("btnA").disabled = true;
-    $("btnB").disabled = true;
-    $("nextBtn").disabled = true;
-
-    const end = $("endBox");
-    end.className = "end show " + (failed ? "fail" : "win");
-
-    if (failed){
-      end.innerHTML = "🚨 <b>Faillite.</b> L’entreprise de biscuits ne peut plus continuer.";
-    } else {
-      const score = state.fin + state.img + state.soc;
-      let verdict = "✅ <b>Entreprise stabilisée.</b>";
-      if (state.fin <= 3 || state.img <= 3 || state.soc <= 3) verdict = "⚠️ <b>Entreprise sous tension.</b>";
-      end.innerHTML = `${verdict}<br>Final : 💰 <b>${state.fin}</b>/10 • 🌟 <b>${state.img}</b>/10 • 🤝 <b>${state.soc}</b>/10 • Total <b>${score}</b>/30`;
-    }
-  }
-
-  function resetGame(){
-    state = { ...initialState };
-    idx = 0;
-    pendingPenalty = 0;
-    finished = false;
-
-    $("endBox").className = "end";
-    $("endBox").innerHTML = "";
-    $("log").innerHTML = "";
-
-    renderDashboard();
-    renderDecision();
-    logLine(`Partie réinitialisée : 💰 <b>${state.fin}</b>/10 • 🌟 <b>${state.img}</b>/10 • 🤝 <b>${state.soc}</b>/10`);
-  }
-
-  // ===== Events =====
-  $("btnA").addEventListener("click", () => applyChoice("A"));
-  $("btnB").addEventListener("click", () => applyChoice("B"));
-
-  $("nextBtn").addEventListener("click", () => {
-    if (finished) return;
-    idx++;
-    if (idx >= decisions.length) finishGame(false);
-    else renderDecision();
-  });
-
-  $("resetBtn").addEventListener("click", resetGame);
-
-  // ===== Init =====
-  renderDashboard();
-  renderDecision();
-  logLine(`Bienvenue ! Indicateurs initiaux : 💰 <b>${state.fin}</b>/10 • 🌟 <b>${state.img}</b>/10 • 🤝 <b>${state.soc}</b>/10`);
-</script>
-</body>
-</html>
